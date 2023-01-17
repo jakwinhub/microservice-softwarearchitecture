@@ -2,7 +2,7 @@
 // https://www.jetbrains.com/help/idea/http-response-handling-examples.html#checking-response-headers-body
 
 ### Suche mit vorhandenem Nachnamen
-GET {{baseUrl}}/rest?nachname=Grosskreuz
+GET {{baseUrl}}/rest?nachname=Admin
 Accept: application/hal+json
 Authorization: Basic {{userAdmin}} {{password}}
 
