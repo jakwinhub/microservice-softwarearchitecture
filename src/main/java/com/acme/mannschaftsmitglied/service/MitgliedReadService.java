@@ -43,6 +43,18 @@ public class MitgliedReadService {
     private final MitgliedRepository repo;
     private final FussballvereinRepository fussballvereinRepo;
 
+    public Collection<Mitglied> findAll() {
+        final var mitglieds = repo.findAll();
+        mitglieds.forEach(mitglied -> {
+            final var fussballvereinId = mitglied.getFussballvereinId();
+            final var fussballverein = fetchFussballvereinById(fussballvereinId);
+            final var email = fetchEmailById(fussballvereinId);
+            mitglied.setFussballvereinVereinsname(fussballverein.vereinsname());
+            mitglied.setFussballvereinEmail(email);
+        });
+        return mitglieds;
+    }
+
     /**
      * Ein Mitglied mithilfe von angegebener UUID suchen.
      *
@@ -51,7 +63,7 @@ public class MitgliedReadService {
      * @throws NotFoundException wird geworfern, falls es zur gegebenen UUID kein Mitglied geben sollte
      */
     public @NonNull Mitglied findById(final UUID id) {
-        log.debug("findById: id={}, user={}", id);
+        log.debug("findById: id={}", id);
         final var mitglied = repo.findById(id)
             .orElseThrow(() -> new NotFoundException(id));
         log.debug("findById: {}", mitglied);
@@ -109,7 +121,7 @@ public class MitgliedReadService {
                 if (mitglied.isEmpty()) {
                     throw new NotFoundException(queryParams);
                 }
-                log.debug("find mit Email:", mitglied);
+                log.debug("find mit Email: {}", mitglied);
                 final var mitgliederList = List.of(mitglied.get());
                 return mitgliederList;
             }

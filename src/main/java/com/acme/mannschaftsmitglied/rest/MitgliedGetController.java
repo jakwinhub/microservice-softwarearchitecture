@@ -16,6 +16,7 @@
  */
 package com.acme.mannschaftsmitglied.rest;
 
+import com.acme.mannschaftsmitglied.entity.Mitglied;
 import com.acme.mannschaftsmitglied.service.MitgliedReadService;
 import com.acme.mannschaftsmitglied.service.NotFoundException;
 import io.swagger.v3.oas.annotations.Operation;
@@ -39,16 +40,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import static org.springframework.http.ResponseEntity.status;
-import static org.springframework.http.ResponseEntity.ok;
 import static org.springframework.hateoas.MediaTypes.HAL_JSON_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static com.acme.mannschaftsmitglied.rest.MitgliedGetController.REST_PATH;
 import static org.springframework.http.HttpStatus.NOT_MODIFIED;
+import static org.springframework.http.ResponseEntity.*;
 
-import java.util.UUID;
-import java.util.Optional;
-import java.util.Objects;
+import java.util.*;
 
 
 /**
@@ -123,7 +121,7 @@ class MitgliedGetController {
     @ApiResponse(responseCode = "404", description = "Mitglied nicht gefunden")
     CollectionModel<MitgliedModel> find(@RequestParam final MultiValueMap<String, String> allParams,
                                         final HttpServletRequest request) {
-        log.debug("find: {}", allParams);
+        log.debug("find: allParams={}", allParams);
         final var baseUri = uriHelper.getBaseUri(request).toString();
         final var models = service.find(allParams)
             .stream()
@@ -145,6 +143,39 @@ class MitgliedGetController {
         final var nachnamen = service.findNachnameByPrefix(prefix);
         log.debug("findNachnamenByPrefix: {}", nachnamen);
         return nachnamen.toString();
+    }
+
+    @GetMapping(produces = HAL_JSON_VALUE, path = "/fussballverein")
+    @Operation(summary = "Suche mit Suchkriterien verbunden mit Zugriff auf anderen Microservice", tags = "Suchen")
+    @ApiResponse(responseCode = "200", description = "Suche erfolgreich")
+    @ApiResponse(responseCode = "404", description = "Gesuchtes Objektkonnte nicht gefunden werden")
+    ResponseEntity<CollectionModel<? extends MitgliedModel>> find(@RequestParam final Map<String, String> queryParams,
+                                                                  final HttpServletRequest request) {
+        log.debug("find: queryParams={}", queryParams);
+        if (queryParams.size() > 1) {
+            return notFound().build();
+        }
+        final Collection<Mitglied> mitglieds;
+        if (queryParams.isEmpty()) {
+            service.findAll();
+        }
+        final var fussballvereinIDStr = queryParams.get("fussballvereinId");
+        if (fussballvereinIDStr == null) {
+            return notFound().build();
+        }
+        final var fussballvereinId = UUID.fromString(fussballvereinIDStr);
+        mitglieds = service.findByFussballvereinId(fussballvereinId);
+        final var baseUri = uriHelper.getBaseUri(request).toString();
+        final var models = mitglieds.stream()
+            .map(mitglied -> {
+                final var model = new MitgliedModel(mitglied);
+                model.add(Link.of(baseUri + '/' + mitglied.getId()));
+                return model;
+            })  .toList();
+        if (models.isEmpty()) {
+            return notFound().build();
+        }
+        return ok(CollectionModel.of(models));
     }
 
     @ExceptionHandler

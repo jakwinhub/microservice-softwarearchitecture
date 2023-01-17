@@ -40,7 +40,7 @@ public interface ClientConfig {
     /**
      * Kommentar.
      */
-    int KUNDE_DEFAULT_PORT = 8080;
+    int KUNDE_DEFAULT_PORT = 8081;
 
     /**
      * Markieren einer Klasse als Bean.
