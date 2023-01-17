@@ -1,0 +1,14 @@
+{
+    "nachname": "Test",
+    "email": "Theo@Test.de",
+    "mannschaft" : 1,
+    "hasNewsletter": true,
+    "geburtsdatum": "123",
+    "homepage": "123!",
+    "geschlecht": "W",
+    "familienstand": "L",
+    "adresse": {
+        "plz": 12345,
+        "ort": "Testort"
+    }
+}

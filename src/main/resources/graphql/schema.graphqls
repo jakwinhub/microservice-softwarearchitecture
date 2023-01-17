@@ -1,0 +1,89 @@
+schema{
+  query: Query
+  mutation: Mutation
+}
+
+"Suhe nach Mannschaftsmitglieddaten"
+type Query {
+  mannschaftsmitglied(id: ID!): Mannschaftsmitglied
+  mannschaftsmitglieder(input: Suchkriterien): [Mannschaftsmitglied!]
+}
+
+type Mutation {
+  "Eine neues Mannschaftsmitglied anlegen"
+  create(input: MannschaftsmitgliedInput!): CreatePayload
+}
+
+type CreatePayload {
+  id: String!
+}
+
+"Eigenschaftn eines Mannschaftmitglied-Datensatzes mit unterschiedlichen Eigenschaften"
+type Mannschaftsmitglied{
+  "ID eines Mannschaftsmitglieds"
+  id : ID
+  "Nachname eines Mannschaftsmitglieds"
+  nachname: String!
+  "Email eines Mannschaftsmitglieds"
+  email: String!
+  "Mannschaft eines Mannschaftsmitglieds"
+  mannschaft: Int!
+  "check ob der Newsletter abonniert wurde"
+  hasNewsletter: Boolean!
+  "Geburtsdatum eines Mannschaftsmitglieds"
+  geburtsdatum: String
+  "Homepage eines Mannschaftmitglieds"
+  homepage: String
+  "Geschlecht eines Mannschaftmitglieds"
+  geschlecht: String
+  "Familenstand eines Mannschaftmitglieds"
+  familienstand: String
+  "Adresse eines Mannschaftmitglieds"
+  adresse: Adresse!
+}
+
+type Adresse{
+  "Postleitzahl der Adresse"
+  plz: String!
+  "Ortsangabe"
+  ort: String!
+}
+
+input Suchkriterien {
+  "Nachname der gesuchten Mannschaftmitlgieder"
+  nachname: String
+  "Emailadresse der gesuchten Mannschaftsmitglieder"
+  email: String
+}
+
+input MannschaftsmitgliedInput {
+  nachname: String!
+  email: String!
+  mannschaft: Int!
+  hasNewsletter: Boolean!
+  geburtsdatum: String
+  homepage: String
+  geschlecht: Geschlecht
+  familienstand: Familienstand
+  adresse: AdresseInput!
+}
+
+"Aufzählungstyp für das Geschlecht eines Mannschaftsmitglieds"
+enum Geschlecht {
+  WEIBLICH
+  MAENNLICH
+  DIVERS
+}
+
+"Aufzählungstyp für den Familienstand eines Manschaftmitgleds"
+enum Familienstand {
+  LEDIG
+  VERHEIRATET
+  GESCHIEDEN
+  VERWITWET
+}
+
+input AdresseInput {
+  plz: String!
+  ort: String!
+}

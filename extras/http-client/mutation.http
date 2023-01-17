@@ -1,0 +1,47 @@
+### Einen neuen Kunden anlegen
+GRAPHQL {{baseUrl}}/graphql
+
+mutation {
+  create(
+    input: {
+      nachname: "Graphql"
+      email: "graphql@graphql.de"
+      mannschaft: 1
+      hasNewsletter: true
+      geburtsdatum: "2022-02-01"
+      homepage: "https://graphql.de"
+      geschlecht: WEIBLICH
+      familienstand: LEDIG
+      adresse: {
+        plz: "99999"
+        ort: "Graphqlort"
+      }
+    }
+  ) {
+    id
+  }
+}
+
+### Einen neuen Kunden mit fehlerhaften Daten anlegen
+GRAPHQL {{baseUrl}}/graphql
+
+mutation {
+  create(
+    input: {
+      nachname: "?!:"
+      email: "email@"
+      mannschaft: 11
+      hasNewsletter: true
+      geburtsdatum: "2022-02-01"
+      homepage: "https://graphql.de"
+      geschlecht: WEIBLICH
+      familienstand: LEDIG
+      adresse: {
+        plz: "1234"
+        ort: ""
+      }
+    }
+  ) {
+    id
+  }
+}

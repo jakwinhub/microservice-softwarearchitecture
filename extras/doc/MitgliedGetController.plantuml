@@ -1,0 +1,82 @@
+' Copyright (C) 2019 - present Juergen Zimmermann, Hochschule Karlsruhe
+'
+' This program is free software: you can redistribute it and/or modify
+' it under the terms of the GNU General Public License as published by
+' the Free Software Foundation, either version 3 of the License, or
+' (at your option) any later version.
+'
+' This program is distributed in the hope that it will be useful,
+' but WITHOUT ANY WARRANTY; without even the implied warranty of
+' MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+' GNU General Public License for more details.
+'
+' You should have received a copy of the GNU General Public License
+' along with this program.  If not, see <https://www.gnu.org/licenses/>.
+@startuml MannschaftsmitgliedGetController
+
+skinparam classAttributeIconSize 0
+
+package org.springframework {
+    package web.bind.annotation {
+        interface "@PathVariable" as PathVariable
+
+        interface "@RequestParam" as RequestParam
+
+        interface "@RequestBody" as RequestBody
+    }
+
+    package http {
+        class ResponseEntity<T>
+    }
+    package hateoas {
+        class CollectionModel<E>
+    }
+}
+
+package jakarta.servlet.http {
+    interface HttpServletRequest
+}
+
+package java.util {
+    interface Map<K,V>
+    class UUID
+}
+
+package com.acme.mannschaftsmitglied {
+    package service {
+        class MannschaftsmitgliedReadService << control >> << @Service >>
+    }
+
+    package rest #DDDDDD {
+        class MannschaftsmitgliedModel <<entity>>
+
+        class MannschaftsmitgliedGetController << boundary >> << @RestController >> << @RequestMapping >> {
+            + @GetMapping findById(@PathVariable id: UUID, request: HttpServletRequest): ResponseEntity<MannschaftsmitgliedModel>
+            + @GetMapping find(@RequestParam queryParams: Map<String, String>, request: HttpServletRequest): ResponseEntity<CollectionModel<MannschaftsmitgliedModel>>
+        }
+
+        MannschaftsmitgliedGetController o-right-> "1" MannschaftsmitgliedReadService : service
+        MannschaftsmitgliedGetController ..> MannschaftsmitgliedModel
+
+
+        MannschaftsmitgliedGetController .up.> ResponseEntity
+        MannschaftsmitgliedGetController .up.> CollectionModel
+        MannschaftsmitgliedGetController .up.> HttpServletRequest
+        MannschaftsmitgliedGetController .up.> PathVariable
+        MannschaftsmitgliedGetController .up.> RequestParam
+
+        MannschaftsmitgliedGetController o-right-> RestController
+        MannschaftsmitgliedGetController o-left-> RequestMapping
+        MannschaftsmitgliedGetController .up.> UUID
+        MannschaftsmitgliedGetController .up.> Map
+
+        MannschaftsmitgliedModel .[hidden].> MannschaftsmitgliedReadService
+    }
+    interface "@RestController" as RestController
+    interface "@RequestMapping" as RequestMapping
+}
+
+hide empty members
+
+
+@enduml
