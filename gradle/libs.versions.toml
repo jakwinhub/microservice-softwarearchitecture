@@ -22,20 +22,20 @@ javaVersion = "19"
 
 springBoot = "3.0.1"
 
-annotations = "23.1.0"
+annotations = "24.0.0"
 bouncycastle = "1.72"
 jansi = "2.4.0"
 # https://github.com/lalyos/jfiglet
 jfiglet = "0.0.9"
 springdocOpenapi = "2.0.2"
 testcontainersBom = "1.17.6"
-errorprone = "2.16"
+errorprone = "2.18.0"
 spotbugs = "4.7.3"
 
 # BOMs und spezifische Versionen ueberschreiben
 allureBom = "2.20.1"
-#assertj = "3.23.1"
-flyway = "9.10.2"
+#assertj = "3.24.1"
+flyway = "9.11.0"
 graphqlJava = "20.0"
 #graphqlJavaDataloader = "3.2.0"
 # Praeprozessor
@@ -46,36 +46,35 @@ hibernateJpamodelgen = "6.2.0.CR1"
 #jackson = "2.14.1"
 # Hibernate 6.1 unterstuetzt Jakarta Persistence 3.0
 #jakartaPersistence = "3.1.0"
-#junit = "5.9.1"
+#junit = "5.9.2"
 #logback = "1.4.5"
-# org.springframework.boot:spring-boot-starter-logging
 #log4j2 = "2.19.0"
 lombok = "1.18.24"
-#micrometer = "1.10.2"
+#micrometer = "1.10.3"
 mockito = "4.11.0"
 #mysql = "8.0.31"
-#netty = "4.1.86.Final"
+#netty = "4.1.87.Final"
 oracle = "21.8.0.0"
 #postgres = "42.5.1"
-#reactor = "2022.0.1"
+#querydsl = "5.0.0"
+#reactor = "2022.0.2"
 #slf4j = "2.0.6"
-#spring = "6.0.3"
+#spring = "6.0.4"
 #springData = "2022.0.0"
 #springGraphQL = "1.1.1"
-#springHateoas = "2.0.0"
+#springHateoas = "2.0.1"
 #springSecurity = "6.0.1"
 # https://tomcat.apache.org/tomcat-11.0-doc/changelog.html
 tomcat = "11.0.0-M1"
-#tomcat = "10.1.4"
 # Tomcat 11 enthaelt nicht org.apache.coyote.http11.AbstractHttp11JsseProtocol
 tomcatCoyote = "10.1.2"
 #zipkinReporter = "2.16.3"
 
 # Testen
-junitPlatformSuite = "1.9.1"
+junitPlatformSuite = "1.9.2"
 
 # QS, Reports, Dokumentation
-checkstyle = "10.5.0"
+checkstyle = "10.6.0"
 jacoco = "0.8.8"
 allure = "2.20.1"
 allureJunit = "2.20.1"
@@ -92,17 +91,17 @@ testLogger = "3.2.0"
 allurePlugin = "2.11.2"
 sweeney = "4.6.0"
 forbiddenapis = "3.4"
-owaspDependencycheck = "7.4.2"
+owaspDependencycheck = "7.4.4"
 snyk = "0.4"
-asciidoctor = "3.3.2"
+asciidoctor = "4.0.0-alpha.1"
 nwillc = "3.0.5"
 benManes = "0.44.0"
-markelliot = "0.31.0"
+markelliot = "0.34.0"
 dependencyAnalysis = "1.18.0"
 licenseReport = "2.1"
 
 [libraries]
-#assertj = { module = "org.assertj:assertj-core", version.ref = "assertj" }
+#assertjBom = { module = "org.assertj:assertj-bom", version.ref = "assertj" }
 flyway = { module = "org.flywaydb:flyway-core", version.ref = "flyway" }
 flywayMySQL = { module = "org.flywaydb:flyway-mysql", version.ref = "flyway" }
 graphqlJava = { module = "com.graphql-java:graphql-java", version.ref = "graphqlJava" }
@@ -123,6 +122,7 @@ mockitoBom = { module = "org.mockito:mockito-bom", version.ref = "mockito" }
 #nettyBom = { module = "io.netty:netty-bom", version.ref = "netty" }
 oracle = { module = "com.oracle.database.jdbc:ojdbc11", version.ref = "oracle" }
 #postgres = { module = "org.postgresql:postgresql", version.ref = "postgres" }
+#querydslBom = { module = "com.querydsl:querydsl-bom", version.ref = "querydsl" }
 #reactorBom = { module = "io.projectreactor:reactor-bom", version.ref = "reactor" }
 #slf4jApi = { module = "org.slf4j:slf4j-api", version.ref = "slf4j" }
 #slf4jJul = { module = "org.slf4j:jul-to-slf4j", version.ref = "slf4j" }

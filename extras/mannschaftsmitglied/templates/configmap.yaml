@@ -33,3 +33,8 @@ data:
   SERVER_TOMCAT_BASEDIR: /tmp
   APPLICATION_LOGLEVEL: {{ .Values.logLevel.application }}
   REQUEST_RESPONSE_LOGLEVEL: {{ .Values.logLevel.requestResponse }}
+  HIBERNATE_LOGLEVEL: {{ .Values.logLevel.hibernate }}
+  FLYWAY_LOGLEVEL: {{ .Values.logLevel.flyway }}
+  SPRING_DATASOURCE_URL: {{ .Values.datasource.url }}
+  SPRING_DATASOURCE_USERNAME: {{ .Values.datasource.username }}
+  SPRING_H2_CONSOLE_ENABLED: {{ quote .Values.h2.console.enabled }}

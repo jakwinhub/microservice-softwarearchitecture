@@ -44,9 +44,15 @@ import static org.springframework.hateoas.MediaTypes.HAL_JSON_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static com.acme.mannschaftsmitglied.rest.MitgliedGetController.REST_PATH;
 import static org.springframework.http.HttpStatus.NOT_MODIFIED;
-import static org.springframework.http.ResponseEntity.*;
+import static org.springframework.http.ResponseEntity.status;
+import static org.springframework.http.ResponseEntity.ok;
+import static org.springframework.http.ResponseEntity.notFound;
 
-import java.util.*;
+import java.util.UUID;
+import java.util.Optional;
+import java.util.Objects;
+import java.util.Map;
+import java.util.Collection;
 
 
 /**
@@ -136,19 +142,11 @@ class MitgliedGetController {
         return CollectionModel.of(models);
     }
 
-    @GetMapping(path = "/nachname/{prefix}", produces = APPLICATION_JSON_VALUE)
-    @Operation(summary = "Suche mit Prefix", tags = "Suchen")
-    String findNachnameByPrefix(@PathVariable final String prefix) {
-        log.debug("findeNachnamenByPrefix: {}", prefix);
-        final var nachnamen = service.findNachnameByPrefix(prefix);
-        log.debug("findNachnamenByPrefix: {}", nachnamen);
-        return nachnamen.toString();
-    }
-
     @GetMapping(produces = HAL_JSON_VALUE, path = "/fussballverein")
     @Operation(summary = "Suche mit Suchkriterien verbunden mit Zugriff auf anderen Microservice", tags = "Suchen")
     @ApiResponse(responseCode = "200", description = "Suche erfolgreich")
     @ApiResponse(responseCode = "404", description = "Gesuchtes Objektkonnte nicht gefunden werden")
+    @SuppressWarnings("ReturnCount")
     ResponseEntity<CollectionModel<? extends MitgliedModel>> find(@RequestParam final Map<String, String> queryParams,
                                                                   final HttpServletRequest request) {
         log.debug("find: queryParams={}", queryParams);
@@ -171,11 +169,20 @@ class MitgliedGetController {
                 final var model = new MitgliedModel(mitglied);
                 model.add(Link.of(baseUri + '/' + mitglied.getId()));
                 return model;
-            })  .toList();
+            }).toList();
         if (models.isEmpty()) {
             return notFound().build();
         }
         return ok(CollectionModel.of(models));
+    }
+
+    @GetMapping(path = "/nachname/{prefix}", produces = APPLICATION_JSON_VALUE)
+    @Operation(summary = "Suche mit Prefix", tags = "Suchen")
+    String findNachnameByPrefix(@PathVariable final String prefix) {
+        log.debug("findeNachnamenByPrefix: {}", prefix);
+        final var nachnamen = service.findNachnameByPrefix(prefix);
+        log.debug("findNachnamenByPrefix: {}", nachnamen);
+        return nachnamen.toString();
     }
 
     @ExceptionHandler

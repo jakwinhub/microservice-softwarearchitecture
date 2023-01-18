@@ -1,4 +1,4 @@
-# Copyright (C) 2020 - present Juergen Zimmermann, Hochschule Karlsruhe
+# Copyright (C) 2022 - present Juergen Zimmermann, Hochschule Karlsruhe
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -13,7 +13,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-# Default values for kunde.
+# Default values for bestellung.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
@@ -41,12 +41,14 @@ ssl: "true"
 http2: "true"
 
 logLevel:
-  # -- Loglevel für kunde als Umgebungsvariable
+  # -- Loglevel für bestellung als Umgebungsvariable
   application: info
+  # -- Loglevel für Request und Response
   requestResponse: info
-
-# -- Version als Suffix in deployment.yaml für Canary-Releases
-versionSuffix: -v1
+  # -- Loglevel für Hibernate als Umgebungsvariable
+  hibernate: info
+  # -- Loglevel für Flyway als Umgebungsvariable
+  flyway: info
 
 # -- Anzahl Replica im Pod von Kubernetes
 replicaCount: 2
@@ -57,11 +59,14 @@ image:
   # -- Name des Image
   name: mannschaftsmitglied
   # -- Pull-Policy für das Image
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
   # -- Defaultwert ist im Chart bei `appVersion` und kann überschrieben werden.
   tag: ""
 
 deployment:
+  # -- Name der Secret-Ressource beim DB-System
+  secretNameDB: postgres
+
   # -- Port innerhalb des Containers
   containerPort: 8080
 
@@ -107,13 +112,19 @@ readinessProbe:
   failureThreshold: 3
 
 autoscaling:
-  # -- Ist Autoscaling aktiviert?
-  enabled: true
   # -- Mininmale Anzahl an Replicas
   minReplicas: 1
   # -- Maximale Anzahl an Replicas
   maxReplicas: 100
   # -- Maximale CPU-Auslastung
-  targetCPUUtilizationPercentage: 80
+  cpuUtilizationPercentage: 80
   # -- Maximale RAM-Auslastung
-  targetMemoryUtilizationPercentage: 80
+  memoryUtilizationPercentage: 80
+
+datasource:
+  url: jdbc:postgresql://postgres/mannschaftsmitglied
+  username: mannschaftsmitglied
+
+h2:
+  console:
+    enabled: "false"

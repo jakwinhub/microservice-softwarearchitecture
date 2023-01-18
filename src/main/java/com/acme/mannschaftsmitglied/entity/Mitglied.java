@@ -1,5 +1,6 @@
 package com.acme.mannschaftsmitglied.entity;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.persistence.Id;
@@ -48,7 +49,14 @@ import static jakarta.persistence.FetchType.LAZY;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-@SuppressWarnings({"ClassFanOutComplexity", "UUF_UNUSED_PUBLIC_OR_PROTECTED_FIELD"})
+@SuppressWarnings({"ClassFanOutComplexity",
+    "RequireEmptyLineBeforeBlockTagGroup",
+    "DeclarationOrder",
+    "MagicNumber",
+    "JavadocDeclaration",
+    "MissingSummary",
+    "RedundantSuppression"})
+@SuppressFBWarnings("UUF_UNUSED_PUBLIC_OR_PROTECTED_FIELD")
 public class Mitglied {
     /**
      * Muster für eine gültiges Mitglied.

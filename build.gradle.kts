@@ -75,7 +75,7 @@
 //
 //  13) Initialisierung des Gradle Wrappers in der richtigen Version
 //      dazu ist ggf. eine Internetverbindung erforderlich
-//        gradle wrapper --gradle-version=8.0-milestone-6 --distribution-type=bin
+//        gradle wrapper --gradle-version=8.0-rc-1 --distribution-type=bin
 
 // https://github.com/gradle/kotlin-dsl/tree/master/samples
 // https://docs.gradle.org/current/userguide/kotlin_dsl.html
@@ -156,7 +156,7 @@ plugins {
 
 defaultTasks = mutableListOf("compileTestJava")
 group = "com.acme"
-version = "1.0.0"
+version = "2.0.0"
 
 sweeney {
     enforce(mapOf("type" to "gradle", "expect" to "[8.0,8.0]"))
@@ -234,8 +234,8 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-hateoas")
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-    //implementation("org.springframework.boot:spring-boot-starter-security")
-    //implementation("org.springframework.security:spring-security-crypto")
+    implementation("org.springframework.boot:spring-boot-starter-security")
+    implementation("org.springframework.security:spring-security-crypto")
     implementation("org.springframework.boot:spring-boot-starter-mail")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
 
@@ -399,7 +399,7 @@ tasks.named<BootBuildImage>("bootBuildImage") {
     // "created 42 years ago" wegen Reproducability: https://medium.com/buildpacks/time-travel-with-pack-e0efd8bf05db
 
     // default:   imageName = "docker.io/${project.name}:${project.version}"
-    val path = "juergenzimmermann"
+    val path = "dominikreichl"
     imageName.set("$path/${project.name}")
     val tag = System.getProperty("tag") ?: project.version.toString()
     tags.set(mutableListOf("$path/${project.name}:$tag"))

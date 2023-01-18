@@ -28,6 +28,7 @@ import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.Builder;
+import net.minidev.json.annotate.JsonIgnore;
 
 
 import java.util.UUID;
@@ -45,12 +46,17 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@SuppressWarnings({"JavadocDeclaration", "RequireEmptyLineBeforeBlockTagGroup", "MemberName"})
+@SuppressWarnings({"JavadocDeclaration", "RequireEmptyLineBeforeBlockTagGroup", "MemberName", "MissingSummary"})
 public class Adresse {
     /**
      * Konstante für den regulären Ausdruck einer Postleitzahl als 5-stellige Zahl mit führender Null.
      */
     public static final String PLZ_PATTERN = "^\\d{5}$";
+
+    @Id
+    @GeneratedValue
+    @JsonIgnore
+    private UUID ID;
 
     /**
      * Die Postleitzahl für die Adresse.
@@ -70,9 +76,8 @@ public class Adresse {
      */
     @NotBlank
     private String ort;
-    @Id
-    @GeneratedValue
-    private UUID ID;
+
+
 
 
 }

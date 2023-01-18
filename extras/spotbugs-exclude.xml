@@ -7,10 +7,10 @@
         <Bug pattern="EI_EXPOSE_REP2"/>
     </Match>
     <Match>
-        <Class name="com.acme.kunde.entity.Kunde_" />
+        <Class name="com.acme.mannschaftsmitglied.entity.Mitglied_" />
     </Match>
     <Match>
-        <Class name="com.acme.kunde.entity.Adresse_" />
+        <Class name="com.acme.mannschaftsmitglied.entity.Adresse_ " />
     </Match>
     <Match>
         <Class name="com.acme.kunde.entity.Umsatz_" />

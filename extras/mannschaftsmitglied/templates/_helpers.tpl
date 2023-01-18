@@ -21,7 +21,7 @@ Anpassungen:
 {{/*
 Expand the name of the chart.
 */}}
-{{- define "mannschaftsmitglied.name" -}}
+{{- define "mannschaftsmitgied.name" -}}
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
@@ -46,7 +46,7 @@ If release name contains chart name it will be used as a full name.
 {{/*
 Create chart name and version as used by the chart label.
 */}}
-{{- define "mannschaftsmitglied.chart" -}}
+{{- define "bestellung.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
@@ -55,10 +55,9 @@ Common labels
 https://kubernetes.io/docs/concepts/overview/working-with-objects/common-labels
 https://kubernetes.io/docs/reference/labels-annotations-taints
 https://helm.sh/docs/chart_best_practices/labels/#standard-labels
-https://hub.armosec.io/docs/configuration_parameter_recommendedlabels
 */}}
 {{- define "mannschaftsmitglied.labels" -}}
-helm.sh/chart: {{ include "mannschaftsmitglied.chart" . }}
+helm.sh/chart: {{ include "bestellung.chart" . }}
 {{ include "mannschaftsmitglied.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
@@ -72,7 +71,7 @@ app.kubernetes.io/part-of: acme
 Selector labels
 */}}
 {{- define "mannschaftsmitglied.selectorLabels" -}}
-app: {{ include "mannschaftsmitglied.name" . }}
-app.kubernetes.io/name: {{ include "mannschaftsmitglied.name" . }}
+app: {{ include "mannschaftsmitgied.name" . }}
+app.kubernetes.io/name: {{ include "mannschaftsmitgied.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}

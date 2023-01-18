@@ -43,6 +43,11 @@ public class MitgliedReadService {
     private final MitgliedRepository repo;
     private final FussballvereinRepository fussballvereinRepo;
 
+    /**
+     * Alle Mitglieder zu den gegebenen Suchkriterien finden.
+     *
+     * @return Mitglieder
+     */
     public Collection<Mitglied> findAll() {
         final var mitglieds = repo.findAll();
         mitglieds.forEach(mitglied -> {

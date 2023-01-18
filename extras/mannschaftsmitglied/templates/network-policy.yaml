@@ -23,8 +23,28 @@ metadata:
   name: {{ include "mannschaftsmitglied.fullname" . }}
   namespace: {{ .Values.namespace }}
 spec:
-  # Spezifikation, auf welche Pods die NetworkPolicy angewendet wird
   podSelector:
     matchLabels:
       {{- include "mannschaftsmitglied.selectorLabels" . | nindent 6 }}
-  policyTypes: [Ingress, Egress]
+  policyTypes: [Egress]
+  # kein Ingress-Traffic, auch nicht vom Ingress-Controller
+  #ingress: []
+  egress:
+    - to:
+        - podSelector:
+            matchLabels:
+              app: postgres
+              app.kubernetes.io/name: postgres
+              app.kubernetes.io/instance: postgres
+      ports:
+        - port: 5432
+          protocol: TCP
+    - to:
+        - podSelector:
+            matchLabels:
+              app: mysql
+              app.kubernetes.io/name: mysql
+              app.kubernetes.io/instance: mysql
+      ports:
+        - port: 3306
+          protocol: TCP

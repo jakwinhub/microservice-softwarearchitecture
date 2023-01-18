@@ -16,7 +16,7 @@
 # "." am Anfang bezeichnet den Top-Level Namensraum bei Helm
 
 apiVersion: apps/v1
-# https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.24/#deployment-v1-apps
+# https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.25/#deployment-v1-apps
 kind: Deployment
 metadata:
   name: {{ include "mannschaftsmitglied.fullname" . }}
@@ -33,7 +33,7 @@ spec:
   # https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#selector
   selector:
     # Labels, mit denen z.B. ein Service einen Pod (zu diesem Deployment) identifizieren kann
-    # z.B. fuer:   kubectl delete deployment --selector app=kunde,version=2.0.0 --namespace acme
+    # z.B. fuer:   kubectl delete deployment --selector app=bestellung,version=2.0.0 --namespace acme
     # i.a. gleicher Wert wie in template.metadata.labels
     matchLabels:
       {{- include "mannschaftsmitglied.selectorLabels" . | nindent 6 }}
@@ -45,13 +45,12 @@ spec:
     metadata:
       # Labels fuer einen Pod (NICHT fuer dieses Deployment), der durch dieses Deployment installiert wurde
       labels:
-        {{- include "mannschaftsmitglied.labels" . | nindent 8 }}
+        {{- include "mannschaftsmitglied.selectorLabels" . | nindent 8 }}
     # Spezifikation fuer jeden Pod
     spec:
       containers:
         # https://kubernetes.io/docs/concepts/containers/images
         - image: "{{ .Values.image.repository }}/{{ .Values.image.name }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
-          # default
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           name: {{ .Chart.Name }}
           # https://kubernetes.io/docs/tasks/inject-data-application/define-interdependent-environment-variables
@@ -60,6 +59,15 @@ spec:
             # https://kubernetes.io/docs/concepts/configuration/configmap
             - configMapRef:
                 name: {{ include "mannschaftsmitglied.fullname" . }}
+          env:
+            - name: SPRING_DATASOURCE_PASSWORD
+              valueFrom:
+                # Secrets koennen nur im gleichen Namespace referenziert werden
+                secretKeyRef:
+                  name: {{ .Values.deployment.secretNameDB }}
+                  key: password
+              # H2 statt PostgreSQL oder MySQL
+              #value: {{ .Values.datasource.password }}
           ports:
             - containerPort: {{ .Values.deployment.containerPort }}
               name: http
@@ -76,7 +84,7 @@ spec:
             privileged: false
             allowPrivilegeEscalation: false
             # Logdatei in einem Verzeichnis durch Mounting; Zertifikate werden durch Paketo installiert
-            #readOnlyRootFilesystem: true
+            readOnlyRootFilesystem: true
             # https://kubernetes.io/docs/tutorials/security/seccomp
             seccompProfile:
               # 44 system calls sind deaktiviert
@@ -86,7 +94,7 @@ spec:
             capabilities:
               # keine Linux kernel capabilities
               # bei "baseline" erlaubt: AUDIT_WRITE, CHOWN, DAC_OVERRIDE, FOWNER, FSETID, KILL, MKNOD, NET_BIND_SERVICE, SETFCAP, SETGID, SETPCAP, SETUID, SYS_CHROOT
-              drop: [all]
+              drop: [ALL]
           resources:
             # https://cloud.google.com/blog/products/gcp/kubernetes-best-practices-resource-requests-and-limits
             # https://kubernetes.io/docs/concepts/configuration/manage-resources-containers
@@ -140,12 +148,12 @@ spec:
             failureThreshold: {{ .Values.readinessProbe.failureThreshold }}
           volumeMounts:
             - mountPath: /tmp
-              name: log-{{ include "mannschaftsmitglied.name" . }}{{ .Values.versionSuffix }}
+              name: log-{{ include "mannschaftsmitgied.name" . }}
       volumes:
-        - name: log-{{ include "mannschaftsmitglied.name" . }}{{ .Values.versionSuffix }}
+        - name: log-{{ include "mannschaftsmitgied.name" . }}
           # https://kubernetes.io/docs/concepts/storage/volumes/#hostpath
           hostPath:
-            path: /run/desktop/mnt/host/c/Zimmermann/volumes/{{ include "mannschaftsmitglied.name" . }}{{ .Values.versionSuffix }}
+            path: /run/desktop/mnt/host/c/Zimmermann/volumes/{{ include "mannschaftsmitgied.name" . }}
             type: Directory
           # https://kubernetes.io/docs/concepts/storage/volumes/#emptydir
           #emptyDir: {}

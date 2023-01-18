@@ -25,9 +25,9 @@ metadata:
   name: {{ include "mannschaftsmitglied.fullname" . }}
   namespace: {{ .Values.namespace }}
   labels:
-    # https://helm.sh/docs/chart_template_guide/function_list
-    # nindent rueckt um eine bestimmte Anzahl ("n") Zeichen ein
-    {{- include "mannschaftsmitglied.labels" . | nindent 4 }}
+  # https://helm.sh/docs/chart_template_guide/function_list
+  # nindent rueckt um eine bestimmte Anzahl ("n") Zeichen ein
+  {{- include "mannschaftsmitglied.labels" . | nindent 4 }}
 spec:
   # Selektion der Pods fuer eingehende Requests
   selector:
